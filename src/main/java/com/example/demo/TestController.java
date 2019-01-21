@@ -19,7 +19,11 @@ public class TestController {
 	
 	@PostMapping("/person")
 	public Person createPerson(@RequestBody PersonDTO personDTO) {
-		Person  person = Person.builder().name("").build();
+		Person person =  Person.builder()
+				.name(personDTO.getName())
+				.age(personDTO.getAge())
+				.email(personDTO.getEmail())
+				.build();
 		return personRepository.save(person);
 	}
 }
