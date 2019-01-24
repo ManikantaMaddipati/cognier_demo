@@ -3,7 +3,6 @@ package com.example.demo;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,12 +13,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TestController {
 
-	@Autowired
+
 	private PersonRepository personRepository;
-	
-	@Autowired
+
 	private ModelMapper modelMapper;
 	
+	
+	
+	public TestController(PersonRepository personRepository, ModelMapper modelMapper) {
+
+		this.personRepository = personRepository;
+		this.modelMapper = modelMapper;
+	}
+
 	@GetMapping("/hello")
 	public String hello() {
 		return "Hi Guys";
@@ -28,7 +34,9 @@ public class TestController {
 	@PostMapping("/person")
 	public Person createPerson(@RequestBody PersonDTO personDTO) {
 		Person person =  modelMapper.map(personDTO, Person.class);
-		return personRepository.save(person);
+		person = personRepository.save(person);
+		person.setName("i dont want to show");
+		return person;
 	}
 	
 	@GetMapping("person/{id}")
